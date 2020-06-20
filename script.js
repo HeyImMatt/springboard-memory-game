@@ -57,10 +57,31 @@ function createDivsForColors(colorArray) {
   }
 }
 
+let currentCards = [];
+let gameMatches = [];
 // TODO: Implement this function!
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
-  console.log("you just clicked", event.target);
+  let card = event.target;
+  console.log("you just clicked", card);
+  if (!currentCards.length) {
+    card.style.backgroundColor = card.className;
+    card.setAttribute('data-picked', true);
+    currentCards.push(card);
+  } else if (!currentCards[0].dataset.picked && currentCards[0].className === card.className ) {
+      card.style.backgroundColor = card.className;
+      currentCards[0].removeEventListener('click', handleCardClick);
+      card.removeEventListener('click', handleCardClick);
+      gameMatches.push(currentCards[0], card);
+      currentCards = [];
+  } else {
+    card.style.backgroundColor = card.className;
+    setTimeout(function() {
+      currentCards[0].style.backgroundColor = ''
+      card.style.backgroundColor = ''
+      currentCards = [];
+    }, 1000)
+  }
 }
 
 // when the DOM loads
