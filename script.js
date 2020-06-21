@@ -63,24 +63,38 @@ let gameMatches = [];
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
   let card = event.target;
+  console.dir(gameContainer)
+  gameContainer.classList.toggle('disabled');
   console.log("you just clicked", card);
   if (!currentCards.length) {
     card.style.backgroundColor = card.className;
     card.setAttribute('data-picked', true);
     currentCards.push(card);
-  } else if (!currentCards[0].dataset.picked && currentCards[0].className === card.className ) {
+    gameContainer.classList.toggle('disabled');
+  } else if (!card.dataset.picked && currentCards[0].className === card.className ) {
       card.style.backgroundColor = card.className;
       currentCards[0].removeEventListener('click', handleCardClick);
       card.removeEventListener('click', handleCardClick);
       gameMatches.push(currentCards[0], card);
       currentCards = [];
+      gameContainer.classList.toggle('disabled');
   } else {
     card.style.backgroundColor = card.className;
     setTimeout(function() {
       currentCards[0].style.backgroundColor = ''
+      currentCards[0].removeAttribute('data-picked')
       card.style.backgroundColor = ''
+      gameContainer.classList.toggle('disabled');
       currentCards = [];
     }, 1000)
+  }
+  if (gameMatches.length === 10) {
+    setTimeout(function() {
+      let playAgain = confirm('Game Over! Play again?');
+      if (playAgain) {
+        location.reload();
+      }
+    }, 100);
   }
 }
 
