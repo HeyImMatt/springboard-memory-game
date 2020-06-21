@@ -59,13 +59,13 @@ function createDivsForColors(colorArray) {
 
 let currentCards = [];
 let gameMatches = [];
-// TODO: Implement this function!
+let gameScore = 0;
+
 function handleCardClick(event) {
-  // you can use event.target to see which element was clicked
+
   let card = event.target;
-  console.dir(gameContainer)
   gameContainer.classList.toggle('disabled');
-  console.log("you just clicked", card);
+
   if (!currentCards.length) {
     card.style.backgroundColor = card.className;
     card.setAttribute('data-picked', true);
@@ -78,8 +78,10 @@ function handleCardClick(event) {
       gameMatches.push(currentCards[0], card);
       currentCards = [];
       gameContainer.classList.toggle('disabled');
+      gameScore += 1;
   } else {
     card.style.backgroundColor = card.className;
+    gameScore += 1;
     setTimeout(function() {
       currentCards[0].style.backgroundColor = ''
       currentCards[0].removeAttribute('data-picked')
@@ -90,7 +92,7 @@ function handleCardClick(event) {
   }
   if (gameMatches.length === 10) {
     setTimeout(function() {
-      let playAgain = confirm('Game Over! Play again?');
+      let playAgain = confirm(`Game Over! Number of turns it took: ${gameScore}. Play again?`);
       if (playAgain) {
         location.reload();
       }
